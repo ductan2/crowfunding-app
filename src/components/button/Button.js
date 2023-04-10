@@ -10,7 +10,7 @@ const Button = (props) => {
     return (
         <button
             type={type}
-            className={`py-4 text-base flex items-center justify-center font-semibold text-white ${className} w-full h-full rounded-xl mt-5 ${
+            className={`py-4 text-base flex items-center justify-center font-semibold text-white ${className} w-full h-full rounded-xl ${
                 isLoading ? 'opacity-50' : ''
             }`}
         >

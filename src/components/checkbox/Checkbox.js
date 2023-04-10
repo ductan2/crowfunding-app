@@ -10,9 +10,9 @@ export const Checkbox = ({
     name = ''
 }) => {
     return (
-        <div className="flex justify-start items-center">
+        <div className="flex justify-start items-center cursor-pointer">
             <div
-                className={`w-5 h-5 rounded-md flex items-center justify-center border text-white ${
+                className={`w-5 h-5 select-none rounded-md flex items-center justify-center border text-white ${
                     isCheck ? 'bg-primary border-primary' : 'border-gray-500'
                 }`}
                 onClick={onClick}
@@ -34,7 +34,7 @@ export const Checkbox = ({
                     />
                 </svg>
             </div>
-            <label onClick={onClick} className='font-medium flex-1 ml-5 text-text3 cursor-pointer'>{children}</label>
+            <label onClick={onClick} className='pl-2 font-medium flex-1 ml-5 text-text3 cursor-pointer'>{children}</label>
         </div>
     );
 };

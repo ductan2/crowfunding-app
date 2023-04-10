@@ -1,27 +1,40 @@
-import React, { useState } from 'react';
-import AuthLayout from '../layouts/AuthLayout';
-import { Link } from 'react-router-dom';
-import { Input } from '../components/input/Input';
-import { useForm } from 'react-hook-form';
-import { Label } from '../components/label/Label';
-import { FieldWrap } from '../components/formField/FieldWrap';
-import Button from '../components/button/Button';
+import { ButtonGoogle } from '../components/button/ButtonGoogle';
 import { Checkbox } from '../components/checkbox/Checkbox';
-import * as Yup from "yup"
+import { FieldWrap } from '../components/formField/FieldWrap';
+import { IconEyePassword } from '../components/icon/IconEyePassword';
+import { Input } from '../components/input/Input';
+import { Label } from '../components/label/Label';
+import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import AuthLayout from '../layouts/AuthLayout';
+import Button from '../components/button/Button';
+import useToggle from '../hooks/useToggle';
 
 export const SignUpPage = () => {
-    
-    
+    const schema = yup.object({
+        fullname: yup.string().required('Full name is not valid!'),
+        email: yup
+            .string()
+            .email('Invalid Email!')
+            .required('The field is not valid!'),
+        password: yup
+            .string()
+            .min(6, 'Password must be more than 6 character')
+            .required('Password is not valid!')
+    });
+
     const {
         control,
         handleSubmit,
-        formState: { isSubmitting, isValid }
-    } = useForm();
-    const [term, setTerm] = useState(false);
-    const handleTerm = () => {
-        setTerm(!term);
-    };
-    console.log('🚀  ~  handleTerm ~  term:', term);
+        formState: { isSubmitting, isValid, errors }
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
+    const { value: togglePassword, handleValue: handleTogglePassword } =
+        useToggle();
+    const { value: term, handleValue: handleTerm } = useToggle();
     const authValues = (values) => {
         if (!isValid) return;
         console.log(values);
@@ -29,20 +42,15 @@ export const SignUpPage = () => {
 
     return (
         <AuthLayout heading="Sign Up">
-            <div className=" text-center mt-2 lg:mt-1">
-                <p className="text-text3 text-[14px] lg:text-[12px] mb-5">
+            <div className=" text-center mt-1 lg:mt-2">
+                <p className="text-text3 text-[12px] lg:text-[14px] mb-5">
                     Already have an account?{' '}
                     <Link to={'/sign-in'} className="text-primary">
                         Sign in
                     </Link>
                 </p>
-                <button className="flex justify-center gap-3 font-semibold items-center mx-auto border border-strock w-full px-8 rounded-lg py-4">
-                    <img src="./google-icon.png" className="w-6 h-6" alt="" />
-                    <span className="text-text2 text-[16px]">
-                        Sign up with google
-                    </span>
-                </button>
-                <p className="my-5 text-[14px] text-text2">
+                <ButtonGoogle text="Sign up with google"></ButtonGoogle>
+                <p className="my-5 text-[14px] text-text2 dark:text-white">
                     Or sign up with email
                 </p>
             </div>
@@ -54,6 +62,7 @@ export const SignUpPage = () => {
                         control={control}
                         type="text"
                         placeholder="Jhon doe"
+                        error={errors.fullname?.message}
                     ></Input>
                 </FieldWrap>
                 <FieldWrap>
@@ -62,6 +71,7 @@ export const SignUpPage = () => {
                         name="email"
                         control={control}
                         type="email"
+                        error={errors.email?.message}
                         placeholder="Example@gmail.com"
                     ></Input>
                 </FieldWrap>
@@ -70,11 +80,17 @@ export const SignUpPage = () => {
                     <Input
                         name="password"
                         control={control}
-                        type="password"
+                        type={`${!togglePassword ? 'password' : 'text'}`}
                         placeholder="Create a password"
-                    ></Input>
+                        error={errors.password?.message}
+                    >
+                        <IconEyePassword
+                            open={togglePassword}
+                            onClick={handleTogglePassword}
+                        ></IconEyePassword>
+                    </Input>
                 </FieldWrap>
-                <div className="flex gap-5 mt-5">
+                <div className="flex gap-5 my-5">
                     <Checkbox name="term" isCheck={term} onClick={handleTerm}>
                         <p className=" text-[14px] text-text2 ">
                             I agree to the{' '}

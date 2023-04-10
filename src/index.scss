@@ -1,11 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@mixin font-smoothing {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 @layer base {
   body {
-    @apply font-body;
+    @apply font-body font-normal mx-auto;
+    text-rendering: optimizeLegibility;
+    @include font-smoothing();
+    max-width: 1440px;
+
   }
   input{
     @apply outline-none;
   }
+  
 }
+
