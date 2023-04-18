@@ -38,8 +38,9 @@ const sidebarLink = [
         url: '/logout',
         onClick: () => {}
     },
-    { title: 'Light', icon: <IconLight></IconLight> }
+    { title: 'Light', icon: <IconLight></IconLight>,url:"/light"}
 ];
+const navLinkClass = 'mt-5 first:mt-0 p-2 flex items-center justify-center ';
 const DashBoardSideBar = () => {
     return (
         <div className="w-full  md:w-[76px] h-full flex-shrink-0 max-h-[733px] bg-white rounded-3xl flex flex-col shadow-sdprimary py-10 px-3 sidebar ">
@@ -48,8 +49,11 @@ const DashBoardSideBar = () => {
                     <NavLink
                         to={item.url}
                         key={item.title}
-                        className={`mt-5 first:mt-0 p-2 flex items-center justify-center 
-                       `}
+                        className={({ isActive }) =>
+                            isActive
+                                ? `${navLinkClass} text-primary bg-primary bg-opacity-30 rounded-lg`
+                                : `${navLinkClass} icon-color`
+                        }
                     >
                         {item.icon}
                         <span className="text-sm text-text3 sm:hidden">
